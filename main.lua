@@ -14,7 +14,7 @@ local function __call(instance, ...)
   return instance
 end
 
-module = require("constraints.all_of")()
+module = require("constraints.all")()
 module.display = print
 module.last_display = module.display
 
