@@ -2,6 +2,8 @@ local module = {}
 
 local metatable = {}
 
+local message = require("message")
+
 local function __index(instance, key)
   instance._last = require("constraints." .. key) -- Use pcall to other prefices
 
@@ -46,9 +48,9 @@ module.check = function (instance, input, properties)
     child_context:apply_constraint()
 
     if not child_context.result then
-      local message = require("message")(context)
+      local child_message = message(child_context)
 
-      instance.display(message:get())
+      instance.display(child_message:get_single())
       break
     end
   end

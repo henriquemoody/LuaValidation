@@ -1,9 +1,6 @@
 return function (context)
   return {
-    get_full = function (instance)
-
-    end,
-    get = function (instance)
+    get_single = function (instance)
       local current = context
       while #current.children == 1 do
           current = current.children[1]
