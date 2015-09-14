@@ -1,8 +1,7 @@
-local module = {}
-
-local metatable = {}
-
+local all = require("constraints.all")
 local message = require("message")
+local metatable = {}
+local module = {}
 
 local function __index(instance, key)
   instance._last = require("constraints." .. key) -- Use pcall to other prefices
@@ -16,7 +15,6 @@ local function __call(instance, ...)
   return instance
 end
 
-module = require("constraints.all")()
 module.display = print
 module.last_display = module.display
 
@@ -73,7 +71,7 @@ metatable.__index = __index
 metatable.__call = __call
 
 metatable.new = function ()
-  local new_table = {}
+  local new_table = all()
   for key, value in pairs(module) do
     new_table[key] = value
   end
