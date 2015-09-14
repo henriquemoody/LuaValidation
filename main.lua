@@ -1,18 +1,18 @@
 local module = {}
 local metatable = {}
 
-module = require("constraints.allOf")()
+module = require("constraints.all_of")()
 module.display = print
-module.lastDisplay = module.display
+module.last_display = module.display
 
-module.setDisplay = function (callback)
-  module.lastDisplay = module.display
+module.set_display = function (callback)
+  module.last_display = module.display
   module.display = callback
 end
 
 module.restoreDisplay = function (callback)
-  module.display = module.lastDisplay or print
-  module.lastDisplay = nil
+  module.display = module.last_display or print
+  module.last_display = nil
 end
 
 module.assert = function (instance, module)
@@ -24,11 +24,14 @@ module.check = function (instance, module)
 end
 
 module.validate = function (instance, input, properties)
-  properties = properties or {}
-  properties.input = input
+  local context
+  local context_properties
 
-  local context = require("context").new(instance, properties)
-  context:applyConstraint()
+  context_properties = properties or {}
+  context_properties.input = input
+
+  context = require("context").new(instance, context_properties)
+  context:apply_constraint()
 
   return context.result
 end
@@ -40,7 +43,7 @@ module.__index = function (instance, key)
 end
 
 module.__call = function (instance, ...)
-  instance:addConstraint(instance._last(...))
+  instance:add_constraint(instance._last(...))
 
   return instance
 end
@@ -50,24 +53,24 @@ metatable.__index = module.__index
 metatable.__call = module.__call
 
 metatable.new = function ()
-  local newTable = {}
+  local new_table = {}
   for key, value in pairs(module) do
-    newTable[key] = value
+    new_table[key] = value
   end
 
-  newTable._last = nil
+  new_table._last = nil
 
-  return setmetatable(newTable, metatable)
+  return setmetatable(new_table, metatable)
 end
 
 return setmetatable(
   module,
   {
     __index = function (instance, key)
-      local newTable = metatable.new()
-      newTable.__index(newTable, key)
+      local new_table = metatable.new()
+      new_table.__index(new_table, key)
 
-      return newTable
+      return new_table
     end
   }
 )

@@ -5,7 +5,7 @@ module.new = function (constraint, properties)
   context.constraint = constraint
   context.children = {}
 
-  context.newChild = function (instance, constraint, properties)
+  context.new_child = function (instance, constraint, properties)
     local child = module.new(constraint, properties)
 
     for key, value in pairs(instance) do
@@ -20,7 +20,7 @@ module.new = function (constraint, properties)
     return child
   end
 
-  context.applyConstraint = function (instance)
+  context.apply_constraint = function (instance)
     instance.constraint.apply(instance)
   end
 

@@ -2,11 +2,11 @@ return function (constraint)
   local constraints = {}
   return {
     messages = {},
-    addConstraint = function (instance, constraint)
+    add_constraint = function (instance, constraint)
       table.insert(constraints, constraint)
       return instance
     end,
-    getConstraints  = function ()
+    get_constraints  = function ()
       return constraints
     end,
     apply = function (context)
@@ -17,10 +17,10 @@ return function (constraint)
       end
 
       for _, constraint in pairs(constraints) do
-        local childContext = context:newChild(constraint)
-        childContext:applyConstraint()
+        local child_context = context:new_child(constraint)
+        child_context:apply_constraint()
 
-        context.result = context.result and childContext.result
+        context.result = context.result and child_context.result
       end
     end,
   }
