@@ -20,7 +20,9 @@ return function (...)
         local child_context = context:new_child(constraint)
         child_context:apply_constraint()
 
-        context.result = context.result and child_context.result
+        if child_context.result == false then
+          context.result = false
+        end
       end
     end,
   }

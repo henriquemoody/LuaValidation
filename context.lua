@@ -1,9 +1,15 @@
 local module = {new = nil}
 
 module.new = function (constraint, properties)
-  local context = properties or {}
+  local context = {}
   context.constraint = constraint
   context.children = {}
+  context.result = true
+
+  properties = properties or {}
+  for key, value in pairs(properties) do
+    context[key] = value
+  end
 
   context.new_child = function (instance, constraint, properties)
     local child = module.new(constraint, properties)
