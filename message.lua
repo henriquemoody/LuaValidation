@@ -1,4 +1,29 @@
 return function (context)
+
+  local function build(current)
+    local messages = current.constraint.messages
+    local mode = current.mode or "affirmative"
+    local template = current.template or "std"
+    local message = current.message or messages[mode][template]
+    local steps = {}
+
+    current.placeholder = current.placeholder or current.name or tostring(current.input)
+
+    if current.translator then
+      message = current.translator(message)
+    end
+
+    for property in string.gmatch(message, "{{(%a+)}}") do
+      message = string.gsub(
+        message,
+        "{{" .. property .. "}}",
+        '"' .. tostring(current[property]) .. '"'
+      )
+    end
+
+    return message
+  end
+
   return {
     get_single = function (instance)
       local current = context
@@ -6,30 +31,7 @@ return function (context)
           current = current.children[1]
       end
 
-      return instance.build(current)
-    end,
-    build = function (current)
-      local messages = current.constraint.messages
-      local mode = current.mode or "affirmative"
-      local template = current.template or "std"
-      local message = current.message or messages[mode][template]
-      local steps = {}
-
-      current.placeholder = current.placeholder or current.name or tostring(current.input)
-
-      if current.translator then
-        message = current.translator(message)
-      end
-
-      for property in string.gmatch(message, "{{(%a+)}}") do
-        message = string.gsub(
-          message,
-          "{{" .. property .. "}}",
-          '"' .. tostring(current[property]) .. '"'
-        )
-      end
-
-      return message
+      return build(current)
     end
   }
 end
