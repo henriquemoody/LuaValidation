@@ -56,7 +56,7 @@ module.check = function (instance, input, properties)
   end
 end
 
-module.validate = function (instance, input, properties)
+module.is_valid = function (instance, input, properties)
   local context
   local context_properties
 
