@@ -1,6 +1,7 @@
 local module = {}
 local metatable = {}
 
+module = require("constraints.allOf")()
 module.display = print
 module.lastDisplay = module.display
 
@@ -24,16 +25,10 @@ end
 
 module.validate = function (instance, input, properties)
   properties = properties or {}
-  properties.result = true
+  properties.input = input
 
-  local context = require("context").new(input, properties)
-
-  for _, childConstraint in pairs(instance._constraints) do
-    local childContext = context:newChild(input, properties)
-    childConstraint(childContext)
-
-    context.result = context.result and childContext.result
-  end
+  local context = require("context").new(instance, properties)
+  context:applyConstraint()
 
   return context.result
 end
@@ -45,7 +40,7 @@ module.__index = function (instance, key)
 end
 
 module.__call = function (instance, ...)
-  table.insert(instance._constraints, instance._last(...))
+  instance:addConstraint(instance._last(...))
 
   return instance
 end
@@ -60,7 +55,6 @@ metatable.new = function ()
     newTable[key] = value
   end
 
-  newTable._constraints = {}
   newTable._last = nil
 
   return setmetatable(newTable, metatable)
@@ -69,19 +63,9 @@ end
 return setmetatable(
   module,
   {
-    key = nil,
-
     __index = function (instance, key)
-      instance.key = key
-
-      return instance
-    end,
-
-    __call = function (instance, ...)
       local newTable = metatable.new()
-
-      newTable.__index(newTable, instance.key)
-      newTable.__call(newTable, ...)
+      newTable.__index(newTable, key)
 
       return newTable
     end

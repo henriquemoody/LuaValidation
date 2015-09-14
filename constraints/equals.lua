@@ -1,5 +1,8 @@
 return function (expected)
-  return function (context)
-    context.result = context.input == expected
-  end
+  return {
+      messages = {},
+      apply = function (context)
+        context.result = context.input == expected
+      end,
+  }
 end
