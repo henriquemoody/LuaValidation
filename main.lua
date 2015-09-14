@@ -28,8 +28,17 @@ module.restoreDisplay = function (callback)
   module.last_display = nil
 end
 
-module.assert = function (instance, module)
-  instance.display("assert message")
+module.assert = function (instance, input, properties)
+  local context
+  local context_properties
+
+  context_properties = properties or {}
+  context_properties.input = input
+
+  context = require("context").new(instance, context_properties)
+  context:apply_constraint()
+
+  instance.display(message(context):get_full())
 end
 
 module.check = function (instance, input, properties)
