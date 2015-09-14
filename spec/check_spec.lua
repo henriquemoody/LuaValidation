@@ -1,27 +1,29 @@
-describe("Validation of equals constraint", function()
+describe("Validation of check() calls", function()
   local v = require("main")
 
-  it("Must use display normal constraint", function()
-    stub(v, "display")
+  stub(v, "display")
 
-    v.dummy(false):check("Not nil")
+  it("Must use display affirmative constraint", function()
+    v.dummy(false):check("whatever")
 
-    assert.stub(v.display).was.called_with('"Not nil" have to be "false"')
+    assert.stub(v.display).was.called_with('"whatever" have to be "false"')
+  end)
+
+  it("Must use display negative constraint", function()
+    v.never(v.dummy(true)):check("whatever")
+
+    assert.stub(v.display).was.called_with('"whatever" have not to be "true"')
   end)
 
   it("Must use display custom message", function()
-    stub(v, "display")
-
-    v.dummy(false):check("Not nil", {message = "This is not right"})
+    v.dummy(false):check("whatever", {message = "This is not right"})
 
     assert.stub(v.display).was.called_with("This is not right")
   end)
 
   it("Must use translate message", function()
-    stub(v, "display")
-
     v.dummy(false):check(
-      "Not nil",
+      "whatever",
       {
         translator = function (message)
           return '{{placeholder}} deve ser {{result}}'
@@ -29,6 +31,6 @@ describe("Validation of equals constraint", function()
       }
     )
 
-    assert.stub(v.display).was.called_with('"Not nil" deve ser "false"')
+    assert.stub(v.display).was.called_with('"whatever" deve ser "false"')
   end)
 end)
