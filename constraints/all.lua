@@ -1,7 +1,16 @@
 return function (...)
   local constraints = {...}
   return {
-    messages = {},
+    messages = {
+      affirmative = {
+        std = "These constraints must pass for {{placeholder}}",
+        all = "All constraints must pass for {{placeholder}}",
+      },
+      negative = {
+        all = "All constraints must not pass for {{placeholder}}",
+      },
+    },
+
     add_constraint = function (instance, constraint)
       table.insert(constraints, constraint)
       return instance
@@ -10,6 +19,8 @@ return function (...)
       return constraints
     end,
     apply = function (context)
+      local failures = 0
+
       context.result = true
 
       if #constraints == 0 then
@@ -21,8 +32,13 @@ return function (...)
         child_context:apply_constraint()
 
         if child_context.result == false then
+          failures = (failures + 1)
           context.result = false
         end
+      end
+
+      if failures == #constraints then
+        context.template = "all"
       end
     end,
   }
