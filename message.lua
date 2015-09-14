@@ -21,13 +21,11 @@ return function (context)
       current.placeholder = current.placeholder or current.name or tostring(current.input)
 
       for property in string.gmatch(message, "{{(%a+)}}") do
-        if current[property] then
-          message = string.gsub(
-            message,
-            "{{" .. property .. "}}",
-            '"' .. current[property] .. '"'
-          )
-        end
+        message = string.gsub(
+          message,
+          "{{" .. property .. "}}",
+          '"' .. tostring(current[property]) .. '"'
+        )
       end
 
       return message
