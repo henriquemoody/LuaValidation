@@ -1,5 +1,5 @@
-return function (constraint)
-  local constraints = {}
+return function (...)
+  local constraints = {...}
   return {
     messages = {},
     add_constraint = function (instance, constraint)
