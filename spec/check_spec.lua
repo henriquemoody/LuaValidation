@@ -16,4 +16,19 @@ describe("Validation of equals constraint", function()
 
     assert.stub(v.display).was.called_with("This is not right")
   end)
+
+  it("Must use translate message", function()
+    stub(v, "display")
+
+    v.dummy(false):check(
+      "Not nil",
+      {
+        translator = function (message)
+          return '{{placeholder}} deve ser {{result}}'
+        end
+      }
+    )
+
+    assert.stub(v.display).was.called_with('"Not nil" deve ser "false"')
+  end)
 end)

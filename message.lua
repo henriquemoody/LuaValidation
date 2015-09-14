@@ -20,6 +20,10 @@ return function (context)
 
       current.placeholder = current.placeholder or current.name or tostring(current.input)
 
+      if current.translator then
+        message = current.translator(message)
+      end
+
       for property in string.gmatch(message, "{{(%a+)}}") do
         message = string.gsub(
           message,
