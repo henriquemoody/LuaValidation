@@ -1,5 +1,18 @@
 local module = {}
+
 local metatable = {}
+
+local function __index(instance, key)
+  instance._last = require("constraints." .. key) -- Use pcall to other prefices
+
+  return instance
+end
+
+local function __call(instance, ...)
+  instance:add_constraint(instance._last(...))
+
+  return instance
+end
 
 module = require("constraints.all_of")()
 module.display = print
@@ -36,21 +49,8 @@ module.validate = function (instance, input, properties)
   return context.result
 end
 
-module.__index = function (instance, key)
-  instance._last = require("constraints." .. key) -- Use pcall to other prefices
-
-  return instance
-end
-
-module.__call = function (instance, ...)
-  instance:add_constraint(instance._last(...))
-
-  return instance
-end
-
-metatable.__index = module.__index
-
-metatable.__call = module.__call
+metatable.__index = __index
+metatable.__call = __call
 
 metatable.new = function ()
   local new_table = {}
@@ -68,7 +68,7 @@ return setmetatable(
   {
     __index = function (instance, key)
       local new_table = metatable.new()
-      new_table.__index(new_table, key)
+      __index(new_table, key)
 
       return new_table
     end
