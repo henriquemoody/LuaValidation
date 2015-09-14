@@ -32,8 +32,26 @@ module.assert = function (instance, module)
   instance.display("assert message")
 end
 
-module.check = function (instance, module)
-  instance.display("check message")
+module.check = function (instance, input, properties)
+  local context
+  local context_properties
+
+  context_properties = properties or {}
+  context_properties.input = input
+
+  context = require("context").new(instance, context_properties)
+
+  for _, constraint in pairs(instance.get_constraints()) do
+    local child_context = context:new_child(constraint)
+    child_context:apply_constraint()
+
+    if not child_context.result then
+      local message = require("message")(context)
+
+      instance.display(message:get())
+      break
+    end
+  end
 end
 
 module.validate = function (instance, input, properties)
