@@ -1,5 +1,5 @@
-describe("Validation of nil_value rule", function()
-  local rule = require("rules.nil_value")
+describe("Validation of absent rule", function()
+  local rule = require("rules.absent")
 
   local valid_inputs = {
     nil
