@@ -2,7 +2,7 @@
 <html lang="en-us">
   <head>
     <meta charset="UTF-8">
-    <title>LuaValidation by henriquemoody</title>
+    <title>Luavalidation by henriquemoody</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
@@ -11,7 +11,7 @@
   </head>
   <body>
     <section class="page-header">
-      <h1 class="project-name">LuaValidation</h1>
+      <h1 class="project-name">Luavalidation</h1>
       <h2 class="project-tagline">Validation library for Lua with fluent API and error message handling</h2>
       <a href="https://github.com/henriquemoody/LuaValidation" class="btn">View on GitHub</a>
       <a href="https://github.com/henriquemoody/LuaValidation/zipball/master" class="btn">Download .zip</a>
@@ -20,7 +20,7 @@
 
     <section class="main-content">
       <h1>
-<a id="luaValidation" class="anchor" href="#luaValidation" aria-hidden="true"><span class="octicon octicon-link"></span></a>LuaValidation</h1>
+<a id="luavalidation" class="anchor" href="#luavalidation" aria-hidden="true"><span class="octicon octicon-link"></span></a>LuaValidation</h1>
 
 <p>Validation library for Lua with fluent API and error message handling inspired
 by <a href="https://github.com/Respect/Validation">Respect\Validation</a>.</p>
@@ -28,22 +28,34 @@ by <a href="https://github.com/Respect/Validation">Respect\Validation</a>.</p>
 <h2>
 <a id="instalation" class="anchor" href="#instalation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Instalation</h2>
 
-<p>You can install it using <a href="https://luarocks.org">LuaRocks</a>.</p>
+<p>You can install it by using <a href="https://luarocks.org">LuaRocks</a>.</p>
 
 <div class="highlight highlight-source-shell"><pre>luarocks install validation</pre></div>
 
 <h2>
 <a id="usage" class="anchor" href="#usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usage</h2>
 
-<p>This library follows the same principals of fluent API of <a href="https://github.com/Respect/Validation" title="Respect\Validation">Respect\Validation</a>,
-so you're able to create chains like it:</p>
+<p>The fluent API of library follows the same principles of <a href="https://github.com/Respect/Validation" title="Respect\Validation">Respect\Validation</a>.</p>
 
-<div class="highlight highlight-source-lua"><pre><span class="pl-k">local</span> v <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">"</span>validation<span class="pl-pds">"</span></span>)
+<h3>
+<a id="module-import" class="anchor" href="#module-import" aria-hidden="true"><span class="octicon octicon-link"></span></a>Module import</h3>
 
-v.<span class="pl-c1">numeric</span>().<span class="pl-c1">positive</span>().<span class="pl-c1">between</span>(<span class="pl-c1">1</span>, <span class="pl-c1">256</span>)</pre></div>
+<p>After installing LuaValidation you can simple import it:</p>
 
-<p>There are more than only one way to performa validation against you data with
-<em>validation</em>, we have 3 methods:</p>
+<div class="highlight highlight-source-lua"><pre><span class="pl-k">local</span> v <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">"</span>validation<span class="pl-pds">"</span></span>)</pre></div>
+
+<h3>
+<a id="chained-validation" class="anchor" href="#chained-validation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Chained validation</h3>
+
+<p>It is possible to use validators in a chain.</p>
+
+<div class="highlight highlight-source-lua"><pre>v.<span class="pl-c1">numeric</span>().<span class="pl-c1">positive</span>().<span class="pl-c1">between</span>(<span class="pl-c1">1</span>, <span class="pl-c1">256</span>)</pre></div>
+
+<h3>
+<a id="validation-functions" class="anchor" href="#validation-functions" aria-hidden="true"><span class="octicon octicon-link"></span></a>Validation functions</h3>
+
+<p>There are more than only one way to perform validation against you data with
+LuaValidation:</p>
 
 <ul>
 <li><code>assert()</code></li>
@@ -51,10 +63,10 @@ v.<span class="pl-c1">numeric</span>().<span class="pl-c1">positive</span>().<sp
 <li><code>validate()</code></li>
 </ul>
 
-<h3>
-<a id="assert" class="anchor" href="#assert" aria-hidden="true"><span class="octicon octicon-link"></span></a>assert()</h3>
+<h4>
+<a id="assert" class="anchor" href="#assert" aria-hidden="true"><span class="octicon octicon-link"></span></a>assert()</h4>
 
-<p>This method validates the entire chain and produces its message.</p>
+<p>This function validates the entire chain and produces its message.</p>
 
 <div class="highlight highlight-source-lua"><pre>v.<span class="pl-c1">numeric</span>().<span class="pl-c1">positive</span>().<span class="pl-c1">between</span>(<span class="pl-c1">1</span>, <span class="pl-c1">256</span>):<span class="pl-c1">assert</span>(<span class="pl-c1">0</span>)</pre></div>
 
@@ -65,12 +77,8 @@ v.<span class="pl-c1">numeric</span>().<span class="pl-c1">positive</span>().<sp
  - "0" must be between "1" and "256"
 </code></pre>
 
-<p>By default you it uses <code>error()</code> as default message handler, but you change this
-behaviour by defining a new <em>message</em> with <code>v.set_messager()</code> which accepts a
-callback as an argument.</p>
-
-<h3>
-<a id="check" class="anchor" href="#check" aria-hidden="true"><span class="octicon octicon-link"></span></a>check()</h3>
+<h4>
+<a id="check" class="anchor" href="#check" aria-hidden="true"><span class="octicon octicon-link"></span></a>check()</h4>
 
 <p>Works like <code>assert()</code> but is produces only the message of the first rule of the
 rule which did not pass the validation.</p>
@@ -82,18 +90,63 @@ rule which did not pass the validation.</p>
 <pre lang="text"><code>"nil" must be numeric
 </code></pre>
 
-<p>By default you it uses <code>error()</code> as default message handler, but you change this
-behaviour by defining a new <em>message</em> with <code>v.set_messager()</code> which accepts a
-callback as an argument.</p>
+<h4>
+<a id="validate" class="anchor" href="#validate" aria-hidden="true"><span class="octicon octicon-link"></span></a>validate()</h4>
 
-<h3>
-<a id="validate" class="anchor" href="#validate" aria-hidden="true"><span class="octicon octicon-link"></span></a>validate()</h3>
-
-<p>This method returns a boolean value which says if the input is valid or not.</p>
+<p>This function returns a boolean value which says if the input is valid or not.</p>
 
 <div class="highlight highlight-source-lua"><pre><span class="pl-k">if</span> v.<span class="pl-c1">equals</span>(<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>):<span class="pl-c1">validate</span>(input) <span class="pl-k">then</span>
   <span class="pl-c">-- Do something</span>
 <span class="pl-k">end</span></pre></div>
+
+<h3>
+<a id="reusable-chain" class="anchor" href="#reusable-chain" aria-hidden="true"><span class="octicon octicon-link"></span></a>Reusable chain</h3>
+
+<p>Once created, you can reuse your chain anywhere:</p>
+
+<div class="highlight highlight-source-lua"><pre><span class="pl-k">local</span> my_chain <span class="pl-k">=</span> v.<span class="pl-c1">numeric</span>().<span class="pl-c1">positive</span>().<span class="pl-c1">between</span>(<span class="pl-c1">1</span>, <span class="pl-c1">256</span>)
+
+my_chain:<span class="pl-c1">check</span>(first)
+my_chain:<span class="pl-c1">check</span>(second)
+my_chain:<span class="pl-c1">check</span>(third)</pre></div>
+
+<h3>
+<a id="custom-message-handler" class="anchor" href="#custom-message-handler" aria-hidden="true"><span class="octicon octicon-link"></span></a>Custom message handler</h3>
+
+<p>By default you it uses <code>error()</code> as default message handler, but you change this
+behavior by defining a new <em>messager</em> with <code>v.set_messager()</code> which accepts a
+callback as an argument.</p>
+
+<div class="highlight highlight-source-lua"><pre>v.<span class="pl-c1">set_messager</span>(
+    <span class="pl-k">function</span> (message)
+        <span class="pl-c1">print</span>(<span class="pl-s"><span class="pl-pds">"</span>&gt;&gt;&gt;<span class="pl-pds">"</span></span>, message)
+    <span class="pl-k">end</span>
+)</pre></div>
+
+<h3>
+<a id="custom-messages" class="anchor" href="#custom-messages" aria-hidden="true"><span class="octicon octicon-link"></span></a>Custom messages</h3>
+
+<p>When you use <code>assert()</code> and <code>check()</code>, you can define a custom message for you
+message:</p>
+
+<div class="highlight highlight-source-lua"><pre>v.<span class="pl-c1">numeric</span>():<span class="pl-c1">check</span>(<span class="pl-c1">nil</span>, {message <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>Something is not right<span class="pl-pds">"</span></span>})</pre></div>
+
+<p>The above code produces this message:</p>
+
+<pre lang="text"><code>Something is not right
+</code></pre>
+
+<h3>
+<a id="custom-names" class="anchor" href="#custom-names" aria-hidden="true"><span class="octicon octicon-link"></span></a>Custom names</h3>
+
+<p>When you use <code>assert()</code> and <code>check()</code>, sometimes you just want to name it:</p>
+
+<div class="highlight highlight-source-lua"><pre>v.<span class="pl-c1">numeric</span>():<span class="pl-c1">check</span>(<span class="pl-c1">nil</span>, {name <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>Name<span class="pl-pds">"</span></span>})</pre></div>
+
+<p>The above code produces this message:</p>
+
+<pre lang="text"><code>"Name" must be numeric
+</code></pre>
 
 <h2>
 <a id="available-rules" class="anchor" href="#available-rules" aria-hidden="true"><span class="octicon octicon-link"></span></a>Available rules</h2>
@@ -112,7 +165,7 @@ callback as an argument.</p>
 <li>
 <code>equals(expected)</code>: Checks if the input is equal to the <code>expected</code> value</li>
 <li>
-<code>key(key, rule, mandatory)</code>: Performs validation of <code>rule</code> againts the value of <code>key</code> of the input.
+<code>key(key, rule, mandatory)</code>: Performs validation of <code>rule</code> against the value of <code>key</code> of the input.
 If <code>mandatory</code> is <code>true</code> (which is the default value), also checks if the <code>key</code> exists in the input.</li>
 <li>
 <code>never(rule)</code>: Performs the reverse validation of the <code>rule</code> in the given input</li>
@@ -127,10 +180,10 @@ If <code>mandatory</code> is <code>true</code> (which is the default value), als
 </ul>
 
 <p>There's just a few rules, but soon there will be as much as on <a href="https://github.com/Respect/Validation" title="Respect\Validation">Respect\Validation</a>,
-if you want to contribute it will be a preasure for me.</p>
+if you want to contribute it will be a pleasure for me.</p>
 
       <footer class="site-footer">
-        <span class="site-footer-owner"><a href="https://github.com/henriquemoody/LuaValidation">LuaValidation</a> is maintained by <a href="https://github.com/henriquemoody">henriquemoody</a>.</span>
+        <span class="site-footer-owner"><a href="https://github.com/henriquemoody/LuaValidation">Luavalidation</a> is maintained by <a href="https://github.com/henriquemoody">henriquemoody</a>.</span>
 
         <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
       </footer>
