@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Luavalidation by henriquemoody</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">Luavalidation</h1>
+      <h2 class="project-tagline">Validation library for Lua with fluent API and error message handling</h2>
+      <a href="https://github.com/henriquemoody/LuaValidation" class="btn">View on GitHub</a>
+      <a href="https://github.com/henriquemoody/LuaValidation/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/henriquemoody/LuaValidation/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h1>
+<a id="luavalidation" class="anchor" href="#luavalidation" aria-hidden="true"><span class="octicon octicon-link"></span></a>LuaValidation</h1>
+
+<p>Validation library for Lua with fluent API and error message handling inspired
+by <a href="https://github.com/Respect/Validation">Respect\Validation</a>.</p>
+
+<h2>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usage</h2>
+
+<p>This library follows the same principals of fluent API of <a href="https://github.com/Respect/Validation" title="Respect\Validation">Respect\Validation</a>,
+so you're able to create chains like it:</p>
+
+<div class="highlight highlight-source-lua"><pre><span class="pl-k">local</span> v <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">"</span>validation<span class="pl-pds">"</span></span>)
+
+v.<span class="pl-c1">numeric</span>().<span class="pl-c1">positive</span>().<span class="pl-c1">between</span>(<span class="pl-c1">1</span>, <span class="pl-c1">256</span>)</pre></div>
+
+<p>There are more than only one way to performa validation against you data with
+<em>validation</em>, we have 3 methods:</p>
+
+<ul>
+<li><code>assert()</code></li>
+<li><code>check()</code></li>
+<li><code>validate()</code></li>
+</ul>
+
+<h3>
+<a id="assert" class="anchor" href="#assert" aria-hidden="true"><span class="octicon octicon-link"></span></a>assert()</h3>
+
+<p>This method validates the entire chain and produces its message.</p>
+
+<div class="highlight highlight-source-lua"><pre>v.<span class="pl-c1">numeric</span>().<span class="pl-c1">positive</span>().<span class="pl-c1">between</span>(<span class="pl-c1">1</span>, <span class="pl-c1">256</span>):<span class="pl-c1">assert</span>(<span class="pl-c1">0</span>)</pre></div>
+
+<p>The code above should produce this message:</p>
+
+<pre lang="text"><code>Some rules must pass for "0"
+ - "0" must be positive
+ - "0" must be between "1" and "256"
+</code></pre>
+
+<p>By default you it uses <code>error()</code> as default message handler, but you change this
+behaviour by defining a new <em>message</em> with <code>v.set_message()</code> which accepts a
+callback as an argument.</p>
+
+<h3>
+<a id="check" class="anchor" href="#check" aria-hidden="true"><span class="octicon octicon-link"></span></a>check()</h3>
+
+<p>Works like <code>assert()</code> but is produces only the message of the first rule of the
+rule which did not pass the validation.</p>
+
+<div class="highlight highlight-source-lua"><pre>v.<span class="pl-c1">numeric</span>().<span class="pl-c1">positive</span>():<span class="pl-c1">check</span>(<span class="pl-c1">nil</span>)</pre></div>
+
+<p>The code above should produce this message:</p>
+
+<pre lang="text"><code>"nil" must be numeric
+</code></pre>
+
+<h3>
+<a id="validate" class="anchor" href="#validate" aria-hidden="true"><span class="octicon octicon-link"></span></a>validate()</h3>
+
+<p>This method returns a boolean value which says if the input is valid or not.</p>
+
+<div class="highlight highlight-source-lua"><pre><span class="pl-k">if</span> v.<span class="pl-c1">equals</span>(<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>):<span class="pl-c1">validate</span>(input) <span class="pl-k">then</span>
+  <span class="pl-c">-- Do something</span>
+<span class="pl-k">end</span></pre></div>
+
+<h2>
+<a id="available-rules" class="anchor" href="#available-rules" aria-hidden="true"><span class="octicon octicon-link"></span></a>Available rules</h2>
+
+<ul>
+<li>
+<code>absent()</code>: Checks if the input is <code>nil</code>
+</li>
+<li>
+<code>all(...)</code>: Performs validation of all rules defined on its constructor against the input</li>
+<li>
+<code>between(minimum, maximum)</code>: Checks if the input is between <code>minimum</code> and <code>maximum</code>
+</li>
+<li>
+<code>dummy(result)</code>: Performs validation exactly according to what was defined as <code>result</code> on its constructor</li>
+<li>
+<code>equals(expected)</code>: Checks if the input is equal to the <code>expected</code> value</li>
+<li>
+<code>key(key, rule, mandatory)</code>: Performs validation of <code>rule</code> againts the value of <code>key</code> of the input.
+If <code>mandatory</code> is <code>true</code> (which is the default value), also checks if the <code>key</code> exists in the input.</li>
+<li>
+<code>never(rule)</code>: Performs the reverse validation of the <code>rule</code> in the given input</li>
+<li>
+<code>number()</code>: Checks if the input is a number</li>
+<li>
+<code>numeric()</code>: Checks if the input is a numeric value</li>
+<li>
+<code>positive()</code>: Checks if the input is a positive value</li>
+<li>
+<code>string()</code>: Checks if the input is a string</li>
+</ul>
+
+<p>There's just a few rules, but soon there will be as much as on <a href="https://github.com/Respect/Validation" title="Respect\Validation">Respect\Validation</a>,
+if you want to contribute it will be a preasure for me.</p>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/henriquemoody/LuaValidation">Luavalidation</a> is maintained by <a href="https://github.com/henriquemoody">henriquemoody</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
