@@ -1,13 +1,13 @@
 local v = require("validation")
 
-describe("Validation of is_valid() calls", function()
+describe("Validation of validate() calls", function()
   it("Must validate valid chains", function()
     for index, chain in pairs({
         v.dummy(true),
         v.dummy(true).dummy,
         v.dummy(true).dummy(true).dummy(true),
       }) do
-      assert.True(chain:is_valid("whatever"), "Failed at chain #" .. index)
+      assert.True(chain:validate("whatever"), "Failed at chain #" .. index)
     end
   end)
 
@@ -23,17 +23,17 @@ describe("Validation of is_valid() calls", function()
       v.dummy(true).dummy(true).dummy(false),
       v.dummy(true).dummy(false).dummy(false),
     }) do
-      assert.False(chain:is_valid("whatever"), "Failed at chain #" .. index)
+      assert.False(chain:validate("whatever"), "Failed at chain #" .. index)
     end
   end)
 
   it("Should not keep rules in chains", function()
-    assert.False(v.dummy(false):is_valid("whatever"))
-    assert.True(v.dummy(true):is_valid("whatever"))
+    assert.False(v.dummy(false):validate("whatever"))
+    assert.True(v.dummy(true):validate("whatever"))
   end)
 
   it("Must validate chains with never rules", function()
-    assert.False(v.never(v.dummy(true)):is_valid("whatever"))
-    assert.True(v.never(v.dummy(false)):is_valid("whatever"))
+    assert.False(v.never(v.dummy(true)):validate("whatever"))
+    assert.True(v.never(v.dummy(false)):validate("whatever"))
   end)
 end)
