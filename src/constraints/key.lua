@@ -14,7 +14,7 @@ return function (key, constraint, mandatory)
     },
 
     apply = function (context)
-      context.name = key
+      context.key = key
 
       if context.input[key] == nil then
         context.result = (mandatory == false)
@@ -26,7 +26,9 @@ return function (key, constraint, mandatory)
         return
       end
 
-      local child_context = context:new_child(constraint, {name = key, input = context.input[key]})
+      local child_context = context:new_child(constraint)
+      child_context.name = key
+      child_context.input = context.input[key]
       child_context:apply_constraint()
 
       context.result = child_context.result

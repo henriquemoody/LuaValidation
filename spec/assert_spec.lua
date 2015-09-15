@@ -43,13 +43,66 @@ These constraints must pass for "foo"
     local message = [[
 All constraints must pass for "your data"
  - "foo" have to be "false"
- - "nil" must be present
+ - "bar" must be present
  - "baz" have to be "false"]]
     v
       .key("foo", v.dummy(false))
       .key("bar", v.dummy(true))
       .key("baz", v.dummy(false))
       :assert({foo = true, baz = true}, {name = "your data"})
+
+    assert.stub(v.display).was.called_with(message)
+  end)
+
+  it("must display key recursive messages", function()
+    local message = [[
+All constraints must pass for "your data"
+ - All constraints must pass for "mysql"
+  - "host" must be a valid string
+  - "port" cannot be a string
+  - "user" must be present
+  - "password" must be present
+  - "schema" must be a valid string
+ - All constraints must pass for "postgresql"
+  - "host" must be present
+  - "user" must be a valid string
+  - "password" must be a valid string
+  - "schema" must be present]]
+
+    v
+      .key(
+        "mysql",
+        v
+          .key("host", v.string(), true)
+          .key("port", v.never(v.string()), true)
+          .key("user", v.string(), true)
+          .key("password", v.string(), true)
+          .key("schema", v.string(), true),
+        true
+      )
+      .key(
+        "postgresql",
+        v
+          .key("host", v.string(), true)
+          .key("user", v.string(), true)
+          .key("password", v.string(), true)
+          .key("schema", v.string(), true),
+        true
+      )
+      :assert(
+        {
+          mysql = {
+            host = 42,
+            port = "string",
+            schema = 42,
+          },
+          postgresql = {
+            user = 42,
+            password = 42,
+          },
+        },
+        {name = "your data"}
+      )
 
     assert.stub(v.display).was.called_with(message)
   end)
