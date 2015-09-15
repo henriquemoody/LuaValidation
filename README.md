@@ -38,7 +38,7 @@ Some rules must pass for "0"
 ```
 
 By default you it uses `error()` as default message handler, but you change this
-behaviour by defining a new _message_ with `v.set_message()` which accepts a
+behaviour by defining a new _message_ with `v.set_messager()` which accepts a
 callback as an argument.
 
 ### check()
@@ -54,6 +54,10 @@ The code above should produce this message:
 ```text
 "nil" must be numeric
 ```
+
+By default you it uses `error()` as default message handler, but you change this
+behaviour by defining a new _message_ with `v.set_messager()` which accepts a
+callback as an argument.
 
 ### validate()
 
