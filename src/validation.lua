@@ -15,17 +15,17 @@ local function __call(instance, ...)
   return instance
 end
 
-module.display = error
-module.last_display = module.display
+module.messager = error
+module.last_messager = module.messager
 
-module.set_display = function (callback)
-  module.last_display = module.display
-  module.display = callback
+module.set_messager = function (callback)
+  module.last_messager = module.messager
+  module.messager = callback
 end
 
 module.restoreDisplay = function (callback)
-  module.display = module.last_display or error
-  module.last_display = nil
+  module.messager = module.last_messager or error
+  module.last_messager = nil
 end
 
 module.assert = function (instance, input, properties)
@@ -38,7 +38,7 @@ module.assert = function (instance, input, properties)
   context = require("context").new(instance, context_properties)
   context:apply_rule()
 
-  instance.display(message(context):get_full())
+  instance.messager(message(context):get_full())
 end
 
 module.check = function (instance, input, properties)
@@ -57,7 +57,7 @@ module.check = function (instance, input, properties)
     if not child_context.result then
       local child_message = message(child_context)
 
-      instance.display(child_message:get_single())
+      instance.messager(child_message:get_single())
       break
     end
   end

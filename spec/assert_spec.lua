@@ -2,7 +2,7 @@ local v = require("validation")
 
 describe("The assert() calls", function()
 
-  stub(v, "display")
+  stub(v, "messager")
 
   it("must display all messages when all got errors", function()
     local message = [[
@@ -11,7 +11,7 @@ All rules must pass for "whatever"
  - "whatever" must be equal to "something else"]]
     v.equals("something").equals("something else"):assert("whatever")
 
-    assert.stub(v.display).was.called_with(message)
+    assert.stub(v.messager).was.called_with(message)
   end)
 
   it("must use custom message only for the first rule", function()
@@ -21,7 +21,7 @@ Please, provide some valid data
  - "whatever" must be equal to "something else"]]
     v.equals("something").equals("something else"):assert("whatever", {message = "Please, provide some valid data"})
 
-    assert.stub(v.display).was.called_with(message)
+    assert.stub(v.messager).was.called_with(message)
   end)
 
   it("must display only error messages which did not pass", function()
@@ -30,7 +30,7 @@ Some rules must pass for "nil"
  - "nil" must be equal to "whatever"]]
     v.dummy(true).equals("whatever"):assert(nil)
 
-    assert.stub(v.display).was.called_with(message)
+    assert.stub(v.messager).was.called_with(message)
   end)
 
   it("must display negative messages", function()
@@ -46,7 +46,7 @@ Some rules must pass for "foo"
       .never(v.never(v.dummy(false)))
       :assert("foo")
 
-    assert.stub(v.display).was.called_with(message)
+    assert.stub(v.messager).was.called_with(message)
   end)
 
   it("must display key messages", function()
@@ -61,7 +61,7 @@ All rules must pass for "your data"
       .key("baz", v.dummy(false))
       :assert({foo = true, baz = true}, {name = "your data"})
 
-    assert.stub(v.display).was.called_with(message)
+    assert.stub(v.messager).was.called_with(message)
   end)
 
   it("must display key recursive messages", function()
@@ -114,6 +114,6 @@ All rules must pass for "your data"
         {name = "your data"}
       )
 
-    assert.stub(v.display).was.called_with(message)
+    assert.stub(v.messager).was.called_with(message)
   end)
 end)
