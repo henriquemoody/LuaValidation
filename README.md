@@ -3,6 +3,14 @@
 Validation library for Lua with fluent API and error message handling inspired
 by [Respect\Validation](https://github.com/Respect/Validation).
 
+## Instalation
+
+You can install it using [LuaRocks](https://luarocks.org).
+
+```bash
+luarocks install validation
+```
+
 ## Usage
 
 This library follows the same principals of fluent API of [Respect\Validation][],
