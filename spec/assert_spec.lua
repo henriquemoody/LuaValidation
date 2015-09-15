@@ -38,4 +38,19 @@ These constraints must pass for "foo"
 
     assert.stub(v.display).was.called_with(message)
   end)
+
+  it("must display key messages", function()
+    local message = [[
+All constraints must pass for "your data"
+ - "foo" have to be "false"
+ - "nil" must be present
+ - "baz" have to be "false"]]
+    v
+      .key("foo", v.dummy(false))
+      .key("bar", v.dummy(true))
+      .key("baz", v.dummy(false))
+      :assert({foo = true, baz = true}, {name = "your data"})
+
+    assert.stub(v.display).was.called_with(message)
+  end)
 end)
