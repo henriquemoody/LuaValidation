@@ -1,4 +1,4 @@
-local v = require("main")
+local v = require("validation")
 
 describe("The assert() calls", function()
 

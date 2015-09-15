@@ -1,5 +1,5 @@
 describe("Validation of check() calls", function()
-  local v = require("main")
+  local v = require("validation")
 
   stub(v, "display")
 

@@ -1,4 +1,4 @@
-local v = require("main")
+local v = require("validation")
 
 describe("Validation of is_valid() calls", function()
   it("Must validate valid chains", function()
