@@ -1,4 +1,4 @@
-return function (key, constraint, mandatory)
+return function (key, rule, mandatory)
   if mandatory == nil then
     mandatory = true
   end
@@ -21,15 +21,15 @@ return function (key, constraint, mandatory)
         return
       end
 
-      if not constraint then
+      if not rule then
         context.result = true
         return
       end
 
-      local child_context = context:new_child(constraint)
+      local child_context = context:new_child(rule)
       child_context.name = key
       child_context.input = context.input[key]
-      child_context:apply_constraint()
+      child_context:apply_rule()
 
       context.result = child_context.result
     end,

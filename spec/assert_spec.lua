@@ -6,7 +6,7 @@ describe("The assert() calls", function()
 
   it("must display all messages when all got errors", function()
     local message = [[
-All constraints must pass for "whatever"
+All rules must pass for "whatever"
  - "whatever" must be equals to "something"
  - "whatever" must be equals to "something else"]]
     v.equals("something").equals("something else"):assert("whatever")
@@ -16,7 +16,7 @@ All constraints must pass for "whatever"
 
   it("must display only error messages which did not pass", function()
     local message = [[
-These constraints must pass for "nil"
+These rules must pass for "nil"
  - "nil" must be equals to "whatever"]]
     v.dummy(true).equals("whatever"):assert(nil)
 
@@ -25,7 +25,7 @@ These constraints must pass for "nil"
 
   it("must display negative messages", function()
     local message = [[
-These constraints must pass for "foo"
+These rules must pass for "foo"
  - "foo" must not be equals to "foo"
  - "foo" have not to be "true"
  - "foo" have to be "false"]]
@@ -41,7 +41,7 @@ These constraints must pass for "foo"
 
   it("must display key messages", function()
     local message = [[
-All constraints must pass for "your data"
+All rules must pass for "your data"
  - "foo" have to be "false"
  - "bar" must be present
  - "baz" have to be "false"]]
@@ -56,14 +56,14 @@ All constraints must pass for "your data"
 
   it("must display key recursive messages", function()
     local message = [[
-All constraints must pass for "your data"
- - All constraints must pass for "mysql"
+All rules must pass for "your data"
+ - All rules must pass for "mysql"
   - "host" must be a valid string
   - "port" cannot be a string
   - "user" must be present
   - "password" must be present
   - "schema" must be a valid string
- - All constraints must pass for "postgresql"
+ - All rules must pass for "postgresql"
   - "host" must be present
   - "user" must be a valid string
   - "password" must be a valid string

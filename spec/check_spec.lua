@@ -3,13 +3,13 @@ describe("Validation of check() calls", function()
 
   stub(v, "display")
 
-  it("Must use display affirmative constraint", function()
+  it("Must use display affirmative rule", function()
     v.dummy(false):check("whatever")
 
     assert.stub(v.display).was.called_with('"whatever" have to be "false"')
   end)
 
-  it("Must use display negative constraint", function()
+  it("Must use display negative rule", function()
     v.never(v.dummy(true)):check("whatever")
 
     assert.stub(v.display).was.called_with('"whatever" have not to be "true"')

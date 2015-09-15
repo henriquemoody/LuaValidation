@@ -1,16 +1,16 @@
-local all = require("constraints.all")
+local all = require("rules.all")
 local message = require("message")
 local metatable = {}
 local module = {}
 
 local function __index(instance, key)
-  instance._last = require("constraints." .. key) -- Use pcall to other prefices
+  instance._last = require("rules." .. key) -- Use pcall to other prefices
 
   return instance
 end
 
 local function __call(instance, ...)
-  instance:add_constraint(instance._last(...))
+  instance:add_rule(instance._last(...))
 
   return instance
 end
@@ -36,7 +36,7 @@ module.assert = function (instance, input, properties)
   context_properties.input = input
 
   context = require("context").new(instance, context_properties)
-  context:apply_constraint()
+  context:apply_rule()
 
   instance.display(message(context):get_full())
 end
@@ -50,9 +50,9 @@ module.check = function (instance, input, properties)
 
   context = require("context").new(instance, context_properties)
 
-  for _, constraint in pairs(instance.get_constraints()) do
-    local child_context = context:new_child(constraint)
-    child_context:apply_constraint()
+  for _, rule in pairs(instance.get_rules()) do
+    local child_context = context:new_child(rule)
+    child_context:apply_rule()
 
     if not child_context.result then
       local child_message = message(child_context)
@@ -71,7 +71,7 @@ module.is_valid = function (instance, input, properties)
   context_properties.input = input
 
   context = require("context").new(instance, context_properties)
-  context:apply_constraint()
+  context:apply_rule()
 
   return context.result
 end

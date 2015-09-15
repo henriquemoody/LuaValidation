@@ -27,12 +27,12 @@ describe("Validation of is_valid() calls", function()
     end
   end)
 
-  it("Should not keep constraints in chains", function()
+  it("Should not keep rules in chains", function()
     assert.False(v.dummy(false):is_valid("whatever"))
     assert.True(v.dummy(true):is_valid("whatever"))
   end)
 
-  it("Must validate chains with never constraints", function()
+  it("Must validate chains with never rules", function()
     assert.False(v.never(v.dummy(true)):is_valid("whatever"))
     assert.True(v.never(v.dummy(false)):is_valid("whatever"))
   end)

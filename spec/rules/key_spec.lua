@@ -1,8 +1,8 @@
-local key = require("constraints.key")
+local key = require("rules.key")
 local context = require("context")
-local dummy = require("constraints.dummy")
+local dummy = require("rules.dummy")
 
-describe("Validation using key constraint", function()
+describe("Validation using key rule", function()
 
   it("must validate when key exists", function()
     local input = {some = true}
@@ -22,7 +22,7 @@ describe("Validation using key constraint", function()
     assert.True(context.result)
   end)
 
-  it("must validate against defined constraint when it pass", function()
+  it("must validate against defined rule when it pass", function()
     local input = {some = "whatever"}
     local tested_key = key("some", dummy(true))
     local tested_context = context.new(tested_key, {input = input})
@@ -32,7 +32,7 @@ describe("Validation using key constraint", function()
     assert.True(tested_context.result)
   end)
 
-  it("must validate against defined constraint when it does not pass", function()
+  it("must validate against defined rule when it does not pass", function()
     local input = {some = "whatever"}
     local tested_key = key("some", dummy(false))
     local tested_context = context.new(tested_key, {input = input})
@@ -53,7 +53,7 @@ describe("Validation using key constraint", function()
     assert.True(tested_context.result)
   end)
 
-  it("must only validate is key exists when no constraint is defined", function()
+  it("must only validate is key exists when no rule is defined", function()
     local input = {some = "whatever"}
     local tested_key = key("some")
     local tested_context = context.new(tested_key, {input = input})

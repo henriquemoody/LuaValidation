@@ -1,8 +1,8 @@
 local module = {new = nil}
 
-module.new = function (constraint, properties)
+module.new = function (rule, properties)
   local context = {}
-  context.constraint = constraint
+  context.rule = rule
   context.children = {}
   context.result = true
 
@@ -11,8 +11,8 @@ module.new = function (constraint, properties)
     context[key] = value
   end
 
-  context.new_child = function (instance, constraint, properties)
-    local child = module.new(constraint, properties)
+  context.new_child = function (instance, rule, properties)
+    local child = module.new(rule, properties)
 
     for key, value in pairs(instance) do
       if not child[key] then
@@ -26,8 +26,8 @@ module.new = function (constraint, properties)
     return child
   end
 
-  context.apply_constraint = function (instance)
-    instance.constraint.apply(instance)
+  context.apply_rule = function (instance)
+    instance.rule.apply(instance)
   end
 
   return context

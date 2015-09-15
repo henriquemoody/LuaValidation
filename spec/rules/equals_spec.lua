@@ -1,5 +1,5 @@
-describe("Validation of equals constraint", function()
-  local constraint = require("constraints.equals")
+describe("Validation of equals rule", function()
+  local rule = require("rules.equals")
 
   local valid_inputs = {
     {"foo", "foo"},
@@ -17,7 +17,7 @@ describe("Validation of equals constraint", function()
     for _, values in ipairs(valid_inputs) do
       local context = {input = values[2]}
 
-      constraint(values[1]).apply(context)
+      rule(values[1]).apply(context)
 
       assert.True(context.result)
     end
@@ -27,7 +27,7 @@ describe("Validation of equals constraint", function()
     for _, values in ipairs(invalid_inputs) do
       local context = {input = values[2]}
 
-      constraint(values[1]).apply(context)
+      rule(values[1]).apply(context)
 
       assert.False(context.result)
     end
@@ -37,7 +37,7 @@ describe("Validation of equals constraint", function()
     for _, values in ipairs(invalid_inputs) do
       local context = {input = values[2]}
 
-      constraint(values[1]).apply(context)
+      rule(values[1]).apply(context)
 
       assert.Same(values[1], context.expected)
     end

@@ -1,6 +1,6 @@
 return function (context)
   local function build(current)
-    local messages = current.constraint.messages
+    local messages = current.rule.messages
     local mode = current.mode or "affirmative"
     local template = current.template or "std"
     local message = current.message or messages[mode][template]
