@@ -2,10 +2,10 @@ return function (expected)
   return {
     messages = {
       affirmative = {
-        std = "{{placeholder}} must be equals to {{expected}}",
+        std = "{{placeholder}} must be equal to {{expected}}",
       },
       negative = {
-        std = "{{placeholder}} must not be equals to {{expected}}",
+        std = "{{placeholder}} cannot be equal to {{expected}}",
       },
     },
 

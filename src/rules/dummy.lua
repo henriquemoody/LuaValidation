@@ -2,10 +2,10 @@ return function (result)
   return {
     messages = {
       affirmative = {
-        std = "{{placeholder}} have to be {{result}}",
+        std = "{{placeholder}} with result {{result}} in affirmative mode",
       },
       negative = {
-        std = "{{placeholder}} have not to be {{result}}",
+        std = "{{placeholder}} with result {{result}} in negative mode",
       },
     },
     apply = function (context)

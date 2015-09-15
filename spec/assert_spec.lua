@@ -7,8 +7,8 @@ describe("The assert() calls", function()
   it("must display all messages when all got errors", function()
     local message = [[
 All rules must pass for "whatever"
- - "whatever" must be equals to "something"
- - "whatever" must be equals to "something else"]]
+ - "whatever" must be equal to "something"
+ - "whatever" must be equal to "something else"]]
     v.equals("something").equals("something else"):assert("whatever")
 
     assert.stub(v.display).was.called_with(message)
@@ -16,8 +16,8 @@ All rules must pass for "whatever"
 
   it("must display only error messages which did not pass", function()
     local message = [[
-These rules must pass for "nil"
- - "nil" must be equals to "whatever"]]
+Some rules must pass for "nil"
+ - "nil" must be equal to "whatever"]]
     v.dummy(true).equals("whatever"):assert(nil)
 
     assert.stub(v.display).was.called_with(message)
@@ -25,10 +25,10 @@ These rules must pass for "nil"
 
   it("must display negative messages", function()
     local message = [[
-These rules must pass for "foo"
- - "foo" must not be equals to "foo"
- - "foo" have not to be "true"
- - "foo" have to be "false"]]
+Some rules must pass for "foo"
+ - "foo" cannot be equal to "foo"
+ - "foo" with result "true" in negative mode
+ - "foo" with result "false" in affirmative mode]]
     v
       .never(v.equals("foo"))
       .equals("foo")
@@ -42,9 +42,9 @@ These rules must pass for "foo"
   it("must display key messages", function()
     local message = [[
 All rules must pass for "your data"
- - "foo" have to be "false"
- - "bar" must be present
- - "baz" have to be "false"]]
+ - "foo" with result "false" in affirmative mode
+ - "bar" must be defined
+ - "baz" with result "false" in affirmative mode]]
     v
       .key("foo", v.dummy(false))
       .key("bar", v.dummy(true))
@@ -58,16 +58,16 @@ All rules must pass for "your data"
     local message = [[
 All rules must pass for "your data"
  - All rules must pass for "mysql"
-  - "host" must be a valid string
+  - "host" must be a string
   - "port" cannot be a string
-  - "user" must be present
-  - "password" must be present
-  - "schema" must be a valid string
+  - "user" must be defined
+  - "password" must be defined
+  - "schema" must be a string
  - All rules must pass for "postgresql"
-  - "host" must be present
-  - "user" must be a valid string
-  - "password" must be a valid string
-  - "schema" must be present]]
+  - "host" must be defined
+  - "user" must be a string
+  - "password" must be a string
+  - "schema" must be defined]]
 
     v
       .key(

@@ -2,10 +2,10 @@ return function ()
   return {
     messages = {
       affirmative = {
-        std = "{{placeholder}} must be `nil`",
+        std = "{{placeholder}} must be defined",
       },
       negative = {
-        std = "{{placeholder}} must not be `nil`",
+        std = "{{placeholder}} cannot be defined",
       },
     },
     apply = function (context)

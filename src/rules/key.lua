@@ -6,10 +6,10 @@ return function (key, rule, mandatory)
   return {
     messages = {
       affirmative = {
-        std = "{{key}} must be present",
+        std = "{{key}} must be defined",
       },
       negative = {
-        std = "{{key}} must not be present",
+        std = "{{key}} must not be defined",
       },
     },
 

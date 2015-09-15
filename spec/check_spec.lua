@@ -6,13 +6,13 @@ describe("Validation of check() calls", function()
   it("Must use display affirmative rule", function()
     v.dummy(false):check("whatever")
 
-    assert.stub(v.display).was.called_with('"whatever" have to be "false"')
+    assert.stub(v.display).was.called_with('"whatever" with result "false" in affirmative mode')
   end)
 
   it("Must use display negative rule", function()
     v.never(v.dummy(true)):check("whatever")
 
-    assert.stub(v.display).was.called_with('"whatever" have not to be "true"')
+    assert.stub(v.display).was.called_with('"whatever" with result "true" in negative mode')
   end)
 
   it("Must use display custom message", function()

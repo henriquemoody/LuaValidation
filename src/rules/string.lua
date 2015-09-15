@@ -2,7 +2,7 @@ return function ()
   return {
     messages = {
       affirmative = {
-        std = "{{placeholder}} must be a valid string",
+        std = "{{placeholder}} must be a string",
       },
       negative = {
         std = "{{placeholder}} cannot be a string",

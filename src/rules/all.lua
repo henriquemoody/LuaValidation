@@ -3,11 +3,12 @@ return function (...)
   return {
     messages = {
       affirmative = {
-        std = "These rules must pass for {{placeholder}}",
+        std = "Some rules must pass for {{placeholder}}",
         all = "All rules must pass for {{placeholder}}",
       },
       negative = {
-        all = "All rules must not pass for {{placeholder}}",
+        std = "Some rules cannot pass for {{placeholder}}",
+        all = "All rules cannot pass for {{placeholder}}",
       },
     },
 
