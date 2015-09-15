@@ -3,7 +3,15 @@ return function (context)
     local messages = current.rule.messages
     local mode = current.mode or "affirmative"
     local template = current.template or "std"
-    local message = current.message or messages[mode][template]
+    local parent = current.parent
+    local message = messages[mode][template]
+
+    if current.message
+        and (not parent
+          or (parent and not parent._message)
+          or (parent and parent._message and parent.message ~= current.message)) then
+      message = current.message
+    end
 
     current.placeholder = current.placeholder or current.name or tostring(current.input)
 
@@ -18,6 +26,8 @@ return function (context)
         '"' .. tostring(current[property]) .. '"'
       )
     end
+
+    current._message = message
 
     return message
   end

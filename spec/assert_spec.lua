@@ -14,6 +14,16 @@ All rules must pass for "whatever"
     assert.stub(v.display).was.called_with(message)
   end)
 
+  it("must use custom message only for the first rule", function()
+    local message = [[
+Please, provide some valid data
+ - "whatever" must be equal to "something"
+ - "whatever" must be equal to "something else"]]
+    v.equals("something").equals("something else"):assert("whatever", {message = "Please, provide some valid data"})
+
+    assert.stub(v.display).was.called_with(message)
+  end)
+
   it("must display only error messages which did not pass", function()
     local message = [[
 Some rules must pass for "nil"
