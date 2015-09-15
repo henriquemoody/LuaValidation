@@ -15,7 +15,7 @@ local function __call(instance, ...)
   return instance
 end
 
-module.display = print
+module.display = error
 module.last_display = module.display
 
 module.set_display = function (callback)
@@ -24,7 +24,7 @@ module.set_display = function (callback)
 end
 
 module.restoreDisplay = function (callback)
-  module.display = module.last_display or print
+  module.display = module.last_display or error
   module.last_display = nil
 end
 
