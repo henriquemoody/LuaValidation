@@ -1,6 +1,7 @@
 # validation
 
-Validation library for Lua inspired by [Respect\Validation](https://github.com/Respect/Validation).
+Validation library for Lua with fluent API and error message handling inspired
+by [Respect\Validation](https://github.com/Respect/Validation).
 
 ## Usage
 
