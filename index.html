@@ -26,6 +26,13 @@
 by <a href="https://github.com/Respect/Validation">Respect\Validation</a>.</p>
 
 <h2>
+<a id="instalation" class="anchor" href="#instalation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Instalation</h2>
+
+<p>You can install it using <a href="https://luarocks.org">LuaRocks</a>.</p>
+
+<div class="highlight highlight-source-shell"><pre>luarocks install validation</pre></div>
+
+<h2>
 <a id="usage" class="anchor" href="#usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usage</h2>
 
 <p>This library follows the same principals of fluent API of <a href="https://github.com/Respect/Validation" title="Respect\Validation">Respect\Validation</a>,
@@ -59,7 +66,7 @@ v.<span class="pl-c1">numeric</span>().<span class="pl-c1">positive</span>().<sp
 </code></pre>
 
 <p>By default you it uses <code>error()</code> as default message handler, but you change this
-behaviour by defining a new <em>message</em> with <code>v.set_message()</code> which accepts a
+behaviour by defining a new <em>message</em> with <code>v.set_messager()</code> which accepts a
 callback as an argument.</p>
 
 <h3>
@@ -74,6 +81,10 @@ rule which did not pass the validation.</p>
 
 <pre lang="text"><code>"nil" must be numeric
 </code></pre>
+
+<p>By default you it uses <code>error()</code> as default message handler, but you change this
+behaviour by defining a new <em>message</em> with <code>v.set_messager()</code> which accepts a
+callback as an argument.</p>
 
 <h3>
 <a id="validate" class="anchor" href="#validate" aria-hidden="true"><span class="octicon octicon-link"></span></a>validate()</h3>
