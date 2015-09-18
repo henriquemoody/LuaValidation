@@ -16,7 +16,7 @@ function validation.restoreDisplay(callback)
   validation.last_messager = nil
 end
 
-function validation.assert(self, input, properties)
+function validation:assert(input, properties)
   local context
   local context_properties
 
@@ -29,7 +29,7 @@ function validation.assert(self, input, properties)
   self.messager(message(context):get_full())
 end
 
-function validation.check(self, input, properties)
+function validation:check(input, properties)
   local context
   local context_properties
 
@@ -51,7 +51,7 @@ function validation.check(self, input, properties)
   end
 end
 
-function validation.validate(self, input, properties)
+function validation:validate(input, properties)
   local context
   local context_properties
 
