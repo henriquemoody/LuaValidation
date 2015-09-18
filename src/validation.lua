@@ -27,9 +27,11 @@ function validation:assert(input, properties)
   context = require("context").new(self, context_properties)
   context:apply_rule()
 
-  context_message = message.new(context)
+  if not context.result then
+    context_message = message.new(context)
 
-  self.messager(context_message.get_full())
+    self.messager(context_message.get_full())
+  end
 end
 
 function validation:check(input, properties)

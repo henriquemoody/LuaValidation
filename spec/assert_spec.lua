@@ -4,6 +4,12 @@ describe("The assert() calls", function()
 
   stub(v, "messager")
 
+  it("must not display  messages when got not errors", function()
+    v.equals("something"):assert("something")
+
+    assert.stub(v.messager).was_not.called()
+  end)
+
   it("must display all messages when all got errors", function()
     local message = [[
 All rules must pass for "whatever"

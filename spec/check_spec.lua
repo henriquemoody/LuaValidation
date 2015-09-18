@@ -3,6 +3,12 @@ describe("Validation of check() calls", function()
 
   stub(v, "messager")
 
+  it("must not display  messages when got not errors", function()
+    v.equals("something"):check("something")
+
+    assert.stub(v.messager).was_not.called()
+  end)
+
   it("Must use display affirmative rule", function()
     v.dummy(false):check("whatever")
 
