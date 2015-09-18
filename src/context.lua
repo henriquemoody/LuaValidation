@@ -1,18 +1,18 @@
-local module = {new = nil}
+local context = {}
 
-module.new = function (rule, properties)
-  local context = {}
-  context.rule = rule
-  context.children = {}
-  context.result = true
+function context.new(rule, properties)
+  local new_context = {}
+  new_context.rule = rule
+  new_context.children = {}
+  new_context.result = true
 
   properties = properties or {}
   for key, value in pairs(properties) do
-    context[key] = value
+    new_context[key] = value
   end
 
-  context.new_child = function (self, rule, properties)
-    local child = module.new(rule, properties)
+  function new_context:new_child(rule, properties)
+    local child = context.new(rule, properties)
 
     for key, value in pairs(self) do
       if not child[key] then
@@ -26,11 +26,11 @@ module.new = function (rule, properties)
     return child
   end
 
-  context.apply_rule = function (self)
+  function new_context:apply_rule()
     self.rule.apply(self)
   end
 
-  return context
+  return new_context
 end
 
-return module
+return context
