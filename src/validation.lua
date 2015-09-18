@@ -16,49 +16,49 @@ function validation.restoreDisplay(callback)
   validation.last_messager = nil
 end
 
-function validation.assert(instance, input, properties)
+function validation.assert(self, input, properties)
   local context
   local context_properties
 
   context_properties = properties or {}
   context_properties.input = input
 
-  context = require("context").new(instance, context_properties)
+  context = require("context").new(self, context_properties)
   context:apply_rule()
 
-  instance.messager(message(context):get_full())
+  self.messager(message(context):get_full())
 end
 
-function validation.check(instance, input, properties)
+function validation.check(self, input, properties)
   local context
   local context_properties
 
   context_properties = properties or {}
   context_properties.input = input
 
-  context = require("context").new(instance, context_properties)
+  context = require("context").new(self, context_properties)
 
-  for _, rule in pairs(instance.get_rules()) do
+  for _, rule in pairs(self.get_rules()) do
     local child_context = context:new_child(rule)
     child_context:apply_rule()
 
     if not child_context.result then
       local child_message = message(child_context)
 
-      instance.messager(child_message:get_single())
+      self.messager(child_message:get_single())
       break
     end
   end
 end
 
-function validation.validate(instance, input, properties)
+function validation.validate(self, input, properties)
   local context
   local context_properties
 
   context_properties = properties or {}
   context_properties.input = input
 
-  context = require("context").new(instance, context_properties)
+  context = require("context").new(self, context_properties)
   context:apply_rule()
 
   return context.result
@@ -67,13 +67,13 @@ end
 function metatable:__index(key)
   self._last = require("rules." .. key) -- Use pcall to other prefices
 
-  return instance
+  return self
 end
 
 function metatable:__call(...)
   self:add_rule(self._last(...))
 
-  return instance
+  return self
 end
 
 function metatable.new()
@@ -90,7 +90,7 @@ end
 return setmetatable(
   validation,
   {
-    __index = function (instance, key)
+    __index = function (self, key)
       local new_table = metatable.new()
       metatable.__index(new_table, key)
 

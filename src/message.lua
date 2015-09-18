@@ -56,7 +56,7 @@ return function (context)
   end
 
   return {
-    get_full = function (instance)
+    get_full = function (self)
       local messages = {}
       for _, message in pairs(get_messages(context, 0)) do
         local prefix = ""
@@ -71,7 +71,7 @@ return function (context)
       return table.concat(messages, "\n")
     end,
 
-    get_single = function (instance)
+    get_single = function (self)
       local current = context
       while #current.children == 1 do
           current = current.children[1]

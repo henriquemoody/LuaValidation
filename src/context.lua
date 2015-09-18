@@ -11,23 +11,23 @@ module.new = function (rule, properties)
     context[key] = value
   end
 
-  context.new_child = function (instance, rule, properties)
+  context.new_child = function (self, rule, properties)
     local child = module.new(rule, properties)
 
-    for key, value in pairs(instance) do
+    for key, value in pairs(self) do
       if not child[key] then
         child[key] = value
       end
     end
 
-    child.parent = instance
-    table.insert(instance.children, child)
+    child.parent = self
+    table.insert(self.children, child)
 
     return child
   end
 
-  context.apply_rule = function (instance)
-    instance.rule.apply(instance)
+  context.apply_rule = function (self)
+    self.rule.apply(self)
   end
 
   return context

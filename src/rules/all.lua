@@ -12,9 +12,9 @@ return function (...)
       },
     },
 
-    add_rule = function (instance, rule)
+    add_rule = function (self, rule)
       table.insert(rules, rule)
-      return instance
+      return self
     end,
     get_rules  = function ()
       return rules
