@@ -1,7 +1,10 @@
 local all = require("rules.all")
 local message = require("message")
 local metatable = {}
-local validation = {}
+local validation = {
+  messager = error,
+  last_messager = nil,
+}
 
 local function __index(instance, key)
   instance._last = require("rules." .. key) -- Use pcall to other prefices
@@ -15,20 +18,17 @@ local function __call(instance, ...)
   return instance
 end
 
-validation.messager = error
-validation.last_messager = validation.messager
-
-validation.set_messager = function (callback)
+function validation.set_messager(callback)
   validation.last_messager = validation.messager
   validation.messager = callback
 end
 
-validation.restoreDisplay = function (callback)
+function validation.restoreDisplay(callback)
   validation.messager = validation.last_messager or error
   validation.last_messager = nil
 end
 
-validation.assert = function (instance, input, properties)
+function validation.assert(instance, input, properties)
   local context
   local context_properties
 
@@ -41,7 +41,7 @@ validation.assert = function (instance, input, properties)
   instance.messager(message(context):get_full())
 end
 
-validation.check = function (instance, input, properties)
+function validation.check(instance, input, properties)
   local context
   local context_properties
 
@@ -63,7 +63,7 @@ validation.check = function (instance, input, properties)
   end
 end
 
-validation.validate = function (instance, input, properties)
+function validation.validate(instance, input, properties)
   local context
   local context_properties
 
@@ -79,7 +79,7 @@ end
 metatable.__index = __index
 metatable.__call = __call
 
-metatable.new = function ()
+function metatable.new()
   local new_table = all()
   for key, value in pairs(validation) do
     new_table[key] = value
