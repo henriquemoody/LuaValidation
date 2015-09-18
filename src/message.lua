@@ -1,66 +1,66 @@
 local message = {}
 
+function message.build(context)
+  local messages = context.rule.messages
+  local mode = context.mode or "affirmative"
+  local template = context.template or "std"
+  local parent = context.parent
+  local message = messages[mode][template]
+
+  if context.message
+      and (not parent
+        or (parent and not parent._message)
+        or (parent and parent._message and parent.message ~= context.message)) then
+    message = context.message
+  end
+
+  context.placeholder = context.placeholder or context.name or tostring(context.input)
+
+  if context.translator then
+    message = context.translator(message)
+  end
+
+  for property in string.gmatch(message, "{{(%a+)}}") do
+    message = string.gsub(
+      message,
+      "{{" .. property .. "}}",
+      '"' .. tostring(context[property]) .. '"'
+    )
+  end
+
+  context._message = message
+
+  return message
+end
+
+function message.get_messages(context, level)
+  local messages = {}
+
+  while (#context.children == 1 and level > 0) do
+    context = context.children[1]
+  end
+
+  if (context.mode == "negative" or context.result == false) then
+    table.insert(messages, {level = level, content = message.build(context)})
+  end
+
+  for index=1, #context.children do
+    local childConstraint = context.children[index]
+    local childLevel = (level + 1)
+    local childMessages = message.get_messages(childConstraint, childLevel)
+    for _, message in pairs(childMessages) do
+      table.insert(messages, message)
+    end
+  end
+
+  return messages
+end
+
 function message.new(context)
-  local function build(current)
-    local messages = current.rule.messages
-    local mode = current.mode or "affirmative"
-    local template = current.template or "std"
-    local parent = current.parent
-    local message = messages[mode][template]
-
-    if current.message
-        and (not parent
-          or (parent and not parent._message)
-          or (parent and parent._message and parent.message ~= current.message)) then
-      message = current.message
-    end
-
-    current.placeholder = current.placeholder or current.name or tostring(current.input)
-
-    if current.translator then
-      message = current.translator(message)
-    end
-
-    for property in string.gmatch(message, "{{(%a+)}}") do
-      message = string.gsub(
-        message,
-        "{{" .. property .. "}}",
-        '"' .. tostring(current[property]) .. '"'
-      )
-    end
-
-    current._message = message
-
-    return message
-  end
-
-  local function get_messages(current, level)
-    local messages = {}
-
-    while (#current.children == 1 and level > 0) do
-      current = current.children[1]
-    end
-
-    if (current.mode == "negative" or current.result == false) then
-      table.insert(messages, {level = level, content = build(current)})
-    end
-
-    for index=1, #current.children do
-      local childConstraint = current.children[index]
-      local childLevel = (level + 1)
-      local childMessages = get_messages(childConstraint, childLevel)
-      for _, message in pairs(childMessages) do
-        table.insert(messages, message)
-      end
-    end
-
-    return messages
-  end
-
   return {
     get_full = function ()
       local messages = {}
-      for _, message in pairs(get_messages(context, 0)) do
+      for _, message in pairs(message.get_messages(context, 0)) do
         local prefix = ""
 
         if message.level > 0 then
@@ -79,7 +79,7 @@ function message.new(context)
           current = current.children[1]
       end
 
-      return build(current)
+      return message.build(current)
     end
   }
 end
