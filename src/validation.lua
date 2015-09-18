@@ -1,9 +1,11 @@
 local all = require("rules.all")
+local context = require("context")
 local message = require("message")
 local validation = {
   _last = nil,
   messager = error,
   last_messager = nil,
+  default_properties = {},
 }
 
 function validation.set_messager(callback)
@@ -17,34 +19,29 @@ function validation.restore_messager(callback)
 end
 
 function validation:assert(input, properties)
-  local context
-  local context_properties
-  local context_message
+  local chain_context
 
-  context_properties = properties or {}
-  context_properties.input = input
+  chain_context = context.new(self, {input = input})
+  chain_context:merge(properties or {})
+  chain_context:merge(validation.default_properties)
+  chain_context:apply_rule()
 
-  context = require("context").new(self, context_properties)
-  context:apply_rule()
-
-  if not context.result then
-    context_message = message.new(context)
+  if not chain_context.result then
+    local context_message = message.new(chain_context)
 
     self.messager(context_message.get_full())
   end
 end
 
 function validation:check(input, properties)
-  local context
-  local context_properties
+  local chain_context
 
-  context_properties = properties or {}
-  context_properties.input = input
-
-  context = require("context").new(self, context_properties)
+  chain_context = context.new(self, {input = input})
+  chain_context:merge(properties or {})
+  chain_context:merge(validation.default_properties)
 
   for _, rule in pairs(self.get_rules()) do
-    local child_context = context:new_child(rule)
+    local child_context = chain_context:new_child(rule)
     child_context:apply_rule()
 
     if not child_context.result then
@@ -57,16 +54,14 @@ function validation:check(input, properties)
 end
 
 function validation:validate(input, properties)
-  local context
-  local context_properties
+  local chain_context
 
-  context_properties = properties or {}
-  context_properties.input = input
+  chain_context = context.new(self, {input = input})
+  chain_context:merge(properties or {})
+  chain_context:merge(validation.default_properties)
+  chain_context:apply_rule()
 
-  context = require("context").new(self, context_properties)
-  context:apply_rule()
-
-  return context.result
+  return chain_context.result
 end
 
 function validation.new()
