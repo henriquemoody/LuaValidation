@@ -1,6 +1,5 @@
 local all = require("rules.all")
 local message = require("message")
-local metatable = {}
 local validation = {
   _last = nil,
   messager = error,
@@ -72,24 +71,25 @@ end
 
 function validation.new()
   local new_validation = all()
+  local metatable = {}
 
   for key, value in pairs(validation) do
     new_validation[key] = value
   end
 
+  function metatable:__index(key)
+    self._last = require("rules." .. key) -- Use pcall to other prefices
+
+    return self
+  end
+
+  function metatable:__call(...)
+    self:add_rule(self._last(...))
+
+    return self
+  end
+
   return setmetatable(new_validation, metatable)
-end
-
-function metatable:__index(key)
-  self._last = require("rules." .. key) -- Use pcall to other prefices
-
-  return self
-end
-
-function metatable:__call(...)
-  self:add_rule(self._last(...))
-
-  return self
 end
 
 return setmetatable(
