@@ -11,7 +11,7 @@ function validation.set_messager(callback)
   validation.messager = callback
 end
 
-function validation.restoreDisplay(callback)
+function validation.restore_messager(callback)
   validation.messager = validation.last_messager or error
   validation.last_messager = nil
 end
