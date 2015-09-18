@@ -6,18 +6,6 @@ local validation = {
   last_messager = nil,
 }
 
-local function __index(instance, key)
-  instance._last = require("rules." .. key) -- Use pcall to other prefices
-
-  return instance
-end
-
-local function __call(instance, ...)
-  instance:add_rule(instance._last(...))
-
-  return instance
-end
-
 function validation.set_messager(callback)
   validation.last_messager = validation.messager
   validation.messager = callback
@@ -76,8 +64,17 @@ function validation.validate(instance, input, properties)
   return context.result
 end
 
-metatable.__index = __index
-metatable.__call = __call
+function metatable:__index(key)
+  self._last = require("rules." .. key) -- Use pcall to other prefices
+
+  return instance
+end
+
+function metatable:__call(...)
+  self:add_rule(self._last(...))
+
+  return instance
+end
 
 function metatable.new()
   local new_table = all()
@@ -95,7 +92,7 @@ return setmetatable(
   {
     __index = function (instance, key)
       local new_table = metatable.new()
-      __index(new_table, key)
+      metatable.__index(new_table, key)
 
       return new_table
     end
