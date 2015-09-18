@@ -1,6 +1,6 @@
-local key = require("rules.key")
-local context = require("context")
-local dummy = require("rules.dummy")
+local key = require("validation.rules.key")
+local context = require("validation.context")
+local dummy = require("validation.rules.dummy")
 
 describe("Validation using key rule", function()
 

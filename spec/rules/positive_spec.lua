@@ -1,5 +1,5 @@
 describe("Validation with positive rule", function()
-  local positive = require("rules.positive")
+  local positive = require("validation.rules.positive")
 
   local valid_inputs = {
     12,

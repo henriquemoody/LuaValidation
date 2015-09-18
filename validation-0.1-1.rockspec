@@ -4,20 +4,20 @@ version = "0.1-1"
 build = {
   type = "builtin",
   modules = {
-    ["context"] = "src/context.lua",
-    ["message"] = "src/message.lua",
-    ["rules.absent"] = "src/rules/absent.lua",
-    ["rules.all"] = "src/rules/all.lua",
-    ["rules.between"] = "src/rules/between.lua",
-    ["rules.dummy"] = "src/rules/dummy.lua",
-    ["rules.equals"] = "src/rules/equals.lua",
-    ["rules.key"] = "src/rules/key.lua",
-    ["rules.never"] = "src/rules/never.lua",
-    ["rules.number"] = "src/rules/number.lua",
-    ["rules.numeric"] = "src/rules/numeric.lua",
-    ["rules.positive"] = "src/rules/positive.lua",
-    ["rules.string"] = "src/rules/string.lua",
     ["validation"] = "src/validation.lua",
+    ["validation.context"] = "src/context.validation/lua",
+    ["validation.message"] = "src/message.validation/lua",
+    ["validation.rules.absent"] = "src/validation/rules/absent.lua",
+    ["validation.rules.all"] = "src/validation/rules/all.lua",
+    ["validation.rules.between"] = "src/validation/rules/between.lua",
+    ["validation.rules.dummy"] = "src/validation/rules/dummy.lua",
+    ["validation.rules.equals"] = "src/validation/rules/equals.lua",
+    ["validation.rules.key"] = "src/validation/rules/key.lua",
+    ["validation.rules.never"] = "src/validation/rules/never.lua",
+    ["validation.rules.number"] = "src/validation/rules/number.lua",
+    ["validation.rules.numeric"] = "src/validation/rules/numeric.lua",
+    ["validation.rules.positive"] = "src/validation/rules/positive.lua",
+    ["validation.rules.string"] = "src/validation/rules/string.lua",
   }
 }
 

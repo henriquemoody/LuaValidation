@@ -1,5 +1,5 @@
 describe("Validation of equals rule", function()
-  local rule = require("rules.equals")
+  local rule = require("validation.rules.equals")
 
   local valid_inputs = {
     {"foo", "foo"},

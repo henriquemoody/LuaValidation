@@ -1,5 +1,5 @@
 describe("Validation with number rule", function()
-  local number = require("rules.number")
+  local number = require("validation.rules.number")
 
   local valid_inputs = {
     42,

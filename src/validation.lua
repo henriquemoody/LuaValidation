@@ -1,8 +1,8 @@
-local all = require("rules.all")
-local context = require("context")
+local all = require("validation.rules.all")
+local context = require("validation.context")
 local default_properties = {}
 local last_messager = nil
-local message = require("message")
+local message = require("validation.message")
 local messager = error
 local validation = {}
 
@@ -77,7 +77,7 @@ function validation.new()
   end
 
   function metatable:__index(key)
-    self._last = require("rules." .. key) -- Use pcall to other prefices
+    self._last = require("validation.rules." .. key) -- Use pcall to other prefices
 
     return self
   end

@@ -1,6 +1,6 @@
-local context = require("context")
-local dummy = require("rules.dummy")
-local never = require("rules.never")
+local context = require("validation.context")
+local dummy = require("validation.rules.dummy")
+local never = require("validation.rules.never")
 
 describe("Validation of no rule", function()
   it("Must deny the result of defined rule", function()

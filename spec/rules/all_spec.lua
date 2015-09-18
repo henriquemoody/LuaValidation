@@ -1,6 +1,6 @@
-local all = require("rules.all")
-local context = require("context")
-local dummy = require("rules.dummy")
+local all = require("validation.rules.all")
+local context = require("validation.context")
+local dummy = require("validation.rules.dummy")
 
 describe("Validation of all rule", function()
 

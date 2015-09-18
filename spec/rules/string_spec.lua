@@ -1,5 +1,5 @@
 describe("Validation with string rule", function()
-  local string = require("rules.string")
+  local string = require("validation.rules.string")
 
   local valid_inputs = {
     "A",

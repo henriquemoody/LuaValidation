@@ -1,5 +1,5 @@
 describe("Validation with between rule", function()
-  local between = require("rules.between")
+  local between = require("validation.rules.between")
 
   local valid_inputs = {
     {2, 1, 3},
