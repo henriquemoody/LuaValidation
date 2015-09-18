@@ -3,7 +3,7 @@ local message = {}
 function message.build(context)
   local messages = context.rule.messages
   local mode = context.mode or "affirmative"
-  local template = context.template or "std"
+  local template = context.template or "standard"
   local parent = context.parent
   local message = messages[mode][template]
 

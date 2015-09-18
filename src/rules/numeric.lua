@@ -2,10 +2,10 @@ return function ()
   return {
     messages = {
       affirmative = {
-        std = "{{placeholder}} must be numeric",
+        standard = "{{placeholder}} must be numeric",
       },
       negative = {
-        std = "{{placeholder}} cannot be numeric",
+        standard = "{{placeholder}} cannot be numeric",
       },
     },
 

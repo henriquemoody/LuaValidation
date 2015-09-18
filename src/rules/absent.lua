@@ -2,10 +2,10 @@ return function ()
   return {
     messages = {
       affirmative = {
-        std = "{{placeholder}} must be defined",
+        standard = "{{placeholder}} must be defined",
       },
       negative = {
-        std = "{{placeholder}} cannot be defined",
+        standard = "{{placeholder}} cannot be defined",
       },
     },
     apply = function (context)
