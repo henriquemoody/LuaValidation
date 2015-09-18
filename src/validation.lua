@@ -69,6 +69,17 @@ function validation:validate(input, properties)
   return context.result
 end
 
+function validation.new()
+  local new_validation = all()
+  for key, value in pairs(validation) do
+    new_validation[key] = value
+  end
+
+  new_validation._last = nil
+
+  return setmetatable(new_validation, metatable)
+end
+
 function metatable:__index(key)
   self._last = require("rules." .. key) -- Use pcall to other prefices
 
@@ -81,25 +92,14 @@ function metatable:__call(...)
   return self
 end
 
-function metatable.new()
-  local new_table = all()
-  for key, value in pairs(validation) do
-    new_table[key] = value
-  end
-
-  new_table._last = nil
-
-  return setmetatable(new_table, metatable)
-end
-
 return setmetatable(
   validation,
   {
     __index = function (self, key)
-      local new_table = metatable.new()
-      metatable.__index(new_table, key)
+      local new_validation = validation.new()
+      metatable.__index(new_validation, key)
 
-      return new_table
+      return new_validation
     end
   }
 )
