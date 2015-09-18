@@ -2,6 +2,7 @@ local all = require("rules.all")
 local message = require("message")
 local metatable = {}
 local validation = {
+  _last = nil,
   messager = error,
   last_messager = nil,
 }
@@ -71,11 +72,10 @@ end
 
 function validation.new()
   local new_validation = all()
+
   for key, value in pairs(validation) do
     new_validation[key] = value
   end
-
-  new_validation._last = nil
 
   return setmetatable(new_validation, metatable)
 end
@@ -97,9 +97,8 @@ return setmetatable(
   {
     __index = function (self, key)
       local new_validation = validation.new()
-      metatable.__index(new_validation, key)
 
-      return new_validation
+      return new_validation[key]
     end
   }
 )
