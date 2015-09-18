@@ -36,7 +36,7 @@ end
 function message.get_messages(context, level)
   local messages = {}
 
-  while (#context.children == 1 and level > 0) do
+  while (#context.children == 1 and level > 1) do
     context = context.children[1]
   end
 
@@ -60,11 +60,11 @@ function message.new(context)
   return {
     get_full = function ()
       local messages = {}
-      for _, message in pairs(message.get_messages(context, 0)) do
+      for _, message in pairs(message.get_messages(context, 1)) do
         local prefix = ""
 
-        if message.level > 0 then
-          prefix = string.rep(" ", message.level) .. "- "
+        if message.level > 1 then
+          prefix = string.rep(" ", (message.level - 1)) .. "- "
         end
 
         table.insert(messages, prefix .. message.content)
