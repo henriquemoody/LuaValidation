@@ -4,7 +4,7 @@ local default_properties = {}
 local last_messager = nil
 local message = require("message")
 local messager = error
-local validation = {_last = nil}
+local validation = {}
 
 function validation.set_messager(callback)
   last_messager = messager
@@ -14,6 +14,12 @@ end
 function validation.restore_messager(callback)
   messager = last_messager or error
   last_messager = nil
+end
+
+function validation.set_defaults(properties)
+  for key, value in pairs(properties) do
+    default_properties[key] = value
+  end
 end
 
 function validation:assert(input, properties)
