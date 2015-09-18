@@ -1,21 +1,19 @@
 local all = require("rules.all")
 local context = require("context")
+local default_properties = {}
+local last_messager = nil
 local message = require("message")
-local validation = {
-  _last = nil,
-  messager = error,
-  last_messager = nil,
-  default_properties = {},
-}
+local messager = error
+local validation = {_last = nil}
 
 function validation.set_messager(callback)
-  validation.last_messager = validation.messager
-  validation.messager = callback
+  last_messager = messager
+  messager = callback
 end
 
 function validation.restore_messager(callback)
-  validation.messager = validation.last_messager or error
-  validation.last_messager = nil
+  messager = last_messager or error
+  last_messager = nil
 end
 
 function validation:assert(input, properties)
@@ -23,13 +21,13 @@ function validation:assert(input, properties)
 
   chain_context = context.new(self, {input = input})
   chain_context:merge(properties or {})
-  chain_context:merge(validation.default_properties)
+  chain_context:merge(default_properties)
   chain_context:apply_rule()
 
   if not chain_context.result then
     local context_message = message.new(chain_context)
 
-    self.messager(context_message.get_full())
+    messager(context_message.get_full())
   end
 end
 
@@ -38,7 +36,7 @@ function validation:check(input, properties)
 
   chain_context = context.new(self, {input = input})
   chain_context:merge(properties or {})
-  chain_context:merge(validation.default_properties)
+  chain_context:merge(default_properties)
 
   for _, rule in pairs(self.get_rules()) do
     local child_context = chain_context:new_child(rule)
@@ -47,7 +45,7 @@ function validation:check(input, properties)
     if not child_context.result then
       local child_message = message.new(child_context)
 
-      self.messager(child_message.get_single())
+      messager(child_message.get_single())
       break
     end
   end
@@ -58,7 +56,7 @@ function validation:validate(input, properties)
 
   chain_context = context.new(self, {input = input})
   chain_context:merge(properties or {})
-  chain_context:merge(validation.default_properties)
+  chain_context:merge(default_properties)
   chain_context:apply_rule()
 
   return chain_context.result

@@ -1,46 +1,50 @@
+local actual_message
 local v = require("validation")
+v.set_messager(
+  function (message)
+    actual_message = message
+  end
+)
 
 describe("The assert() calls", function()
-
-  stub(v, "messager")
 
   it("must not display  messages when got not errors", function()
     v.equals("something"):assert("something")
 
-    assert.stub(v.messager).was_not.called()
+    assert.True(nil == actual_message)
   end)
 
   it("must display all messages when all got errors", function()
-    local message = [[
+    local expected_message = [[
 All rules must pass for "whatever"
  - "whatever" must be equal to "something"
  - "whatever" must be equal to "something else"]]
     v.equals("something").equals("something else"):assert("whatever")
 
-    assert.stub(v.messager).was.called_with(message)
+    assert.are.equal(actual_message, expected_message)
   end)
 
   it("must use custom message only for the first rule", function()
-    local message = [[
+    local expected_message = [[
 Please, provide some valid data
  - "whatever" must be equal to "something"
  - "whatever" must be equal to "something else"]]
     v.equals("something").equals("something else"):assert("whatever", {message = "Please, provide some valid data"})
 
-    assert.stub(v.messager).was.called_with(message)
+    assert.are.equal(actual_message, expected_message)
   end)
 
   it("must display only error messages which did not pass", function()
-    local message = [[
+    local expected_message = [[
 Some rules must pass for "nil"
  - "nil" must be equal to "whatever"]]
     v.dummy(true).equals("whatever"):assert(nil)
 
-    assert.stub(v.messager).was.called_with(message)
+    assert.are.equal(actual_message, expected_message)
   end)
 
   it("must display negative messages", function()
-    local message = [[
+    local expected_message = [[
 Some rules must pass for "foo"
  - "foo" cannot be equal to "foo"
  - "foo" with result "true" in negative mode
@@ -52,11 +56,11 @@ Some rules must pass for "foo"
       .never(v.never(v.dummy(false)))
       :assert("foo")
 
-    assert.stub(v.messager).was.called_with(message)
+    assert.are.equal(actual_message, expected_message)
   end)
 
   it("must display key messages", function()
-    local message = [[
+    local expected_message = [[
 All rules must pass for "your data"
  - "foo" with result "false" in affirmative mode
  - "bar" must be defined
@@ -67,11 +71,11 @@ All rules must pass for "your data"
       .key("baz", v.dummy(false))
       :assert({foo = true, baz = true}, {name = "your data"})
 
-    assert.stub(v.messager).was.called_with(message)
+    assert.are.equal(actual_message, expected_message)
   end)
 
   it("must display key recursive messages", function()
-    local message = [[
+    local expected_message = [[
 All rules must pass for "your data"
  - All rules must pass for "mysql"
   - "host" must be a string
@@ -120,6 +124,6 @@ All rules must pass for "your data"
         {name = "your data"}
       )
 
-    assert.stub(v.messager).was.called_with(message)
+    assert.are.equal(actual_message, expected_message)
   end)
 end)
