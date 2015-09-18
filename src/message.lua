@@ -1,4 +1,6 @@
-return function (context)
+local message = {}
+
+function message.new(context)
   local function build(current)
     local messages = current.rule.messages
     local mode = current.mode or "affirmative"
@@ -56,7 +58,7 @@ return function (context)
   end
 
   return {
-    get_full = function (self)
+    get_full = function ()
       local messages = {}
       for _, message in pairs(get_messages(context, 0)) do
         local prefix = ""
@@ -71,7 +73,7 @@ return function (context)
       return table.concat(messages, "\n")
     end,
 
-    get_single = function (self)
+    get_single = function ()
       local current = context
       while #current.children == 1 do
           current = current.children[1]
@@ -81,3 +83,5 @@ return function (context)
     end
   }
 end
+
+return message

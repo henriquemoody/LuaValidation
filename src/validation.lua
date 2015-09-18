@@ -19,6 +19,7 @@ end
 function validation:assert(input, properties)
   local context
   local context_properties
+  local context_message
 
   context_properties = properties or {}
   context_properties.input = input
@@ -26,7 +27,9 @@ function validation:assert(input, properties)
   context = require("context").new(self, context_properties)
   context:apply_rule()
 
-  self.messager(message(context):get_full())
+  context_message = message.new(context)
+
+  self.messager(context_message.get_full())
 end
 
 function validation:check(input, properties)
@@ -43,9 +46,9 @@ function validation:check(input, properties)
     child_context:apply_rule()
 
     if not child_context.result then
-      local child_message = message(child_context)
+      local child_message = message.new(child_context)
 
-      self.messager(child_message:get_single())
+      self.messager(child_message.get_single())
       break
     end
   end
