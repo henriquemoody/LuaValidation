@@ -1,7 +1,7 @@
 local all = require("rules.all")
 local message = require("message")
 local metatable = {}
-local module = {}
+local validation = {}
 
 local function __index(instance, key)
   instance._last = require("rules." .. key) -- Use pcall to other prefices
@@ -15,20 +15,20 @@ local function __call(instance, ...)
   return instance
 end
 
-module.messager = error
-module.last_messager = module.messager
+validation.messager = error
+validation.last_messager = validation.messager
 
-module.set_messager = function (callback)
-  module.last_messager = module.messager
-  module.messager = callback
+validation.set_messager = function (callback)
+  validation.last_messager = validation.messager
+  validation.messager = callback
 end
 
-module.restoreDisplay = function (callback)
-  module.messager = module.last_messager or error
-  module.last_messager = nil
+validation.restoreDisplay = function (callback)
+  validation.messager = validation.last_messager or error
+  validation.last_messager = nil
 end
 
-module.assert = function (instance, input, properties)
+validation.assert = function (instance, input, properties)
   local context
   local context_properties
 
@@ -41,7 +41,7 @@ module.assert = function (instance, input, properties)
   instance.messager(message(context):get_full())
 end
 
-module.check = function (instance, input, properties)
+validation.check = function (instance, input, properties)
   local context
   local context_properties
 
@@ -63,7 +63,7 @@ module.check = function (instance, input, properties)
   end
 end
 
-module.validate = function (instance, input, properties)
+validation.validate = function (instance, input, properties)
   local context
   local context_properties
 
@@ -81,7 +81,7 @@ metatable.__call = __call
 
 metatable.new = function ()
   local new_table = all()
-  for key, value in pairs(module) do
+  for key, value in pairs(validation) do
     new_table[key] = value
   end
 
@@ -91,7 +91,7 @@ metatable.new = function ()
 end
 
 return setmetatable(
-  module,
+  validation,
   {
     __index = function (instance, key)
       local new_table = metatable.new()
